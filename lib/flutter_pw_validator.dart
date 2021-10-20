@@ -18,12 +18,12 @@ class FlutterPwValidator extends StatefulWidget {
   final TextEditingController controller;
 
   FlutterPwValidator(
-      {@required this.width,
-      @required this.height,
-      @required this.minLength,
-      @required this.onSuccess,
-      @required this.onFailure,
-      @required this.controller,
+      {required this.width,
+      required this.height,
+      required this.minLength,
+      required this.onSuccess,
+      required this.onFailure,
+      required this.controller,
       this.uppercaseCharCount = 0,
       this.numericCharCount = 0,
       this.specialCharCount = 0,
@@ -41,7 +41,7 @@ class FlutterPwValidator extends StatefulWidget {
 
 class _FlutterPwValidatorState extends State<FlutterPwValidator> {
   //estimate that this the first run or not
-  bool isFirstRun;
+  late bool isFirstRun;
 
   //Variables that hold current condition states
   dynamic hasMinLength,
@@ -85,10 +85,10 @@ class _FlutterPwValidatorState extends State<FlutterPwValidator> {
         hasMinSpecialChar);
 
     //Checks if all condition are true then call the user callback
-    int conditionsCount = conditionsHelper.getter().length;
+    int conditionsCount = conditionsHelper.getter()!.length;
     int trueCondition = 0;
     bool isFalse = false;
-    for (bool value in conditionsHelper.getter().values) {
+    for (bool value in conditionsHelper.getter()!.values) {
       if (value == true)
         trueCondition += 1;
       else if (value == false && conditionsCount != trueCondition) {
@@ -141,12 +141,12 @@ class _FlutterPwValidatorState extends State<FlutterPwValidator> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Iterate through the conditions map values to check if there is any true values then create green ValidationBarComponent.
-                for (bool value in conditionsHelper.getter().values)
+                for (bool value in conditionsHelper.getter()!.values)
                   if (value == true)
                     new ValidationBarComponent(color: widget.successColor),
 
                 // Iterate through the conditions map values to check if there is any false values then create red ValidationBarComponent.
-                for (bool value in conditionsHelper.getter().values)
+                for (bool value in conditionsHelper.getter()!.values)
                   if (value == false)
                     new ValidationBarComponent(color: widget.defaultColor)
               ],
@@ -158,8 +158,8 @@ class _FlutterPwValidatorState extends State<FlutterPwValidator> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                 //Iterate through the condition map entries and generate new ValidationTextWidget for each item in Green or Red Color
-                children: conditionsHelper.getter().entries.map((entry) {
-                  int value;
+                children: conditionsHelper.getter()!.entries.map((entry) {
+                  int? value;
                   if (entry.key == Strings.AT_LEAST) value = widget.minLength;
                   if (entry.key == Strings.UPPERCASE_LETTER)
                     value = widget.uppercaseCharCount;
