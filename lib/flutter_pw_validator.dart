@@ -15,7 +15,6 @@ class FlutterPwValidator extends StatefulWidget {
   final double width, height;
   final Function onSuccess;
   final Function onFailure;
-  final Strings stringConstants;
   final TextEditingController controller;
 
   FlutterPwValidator(
@@ -25,7 +24,6 @@ class FlutterPwValidator extends StatefulWidget {
       @required this.onSuccess,
       @required this.onFailure,
       @required this.controller,
-      @required this.stringConstants,
       this.uppercaseCharCount = 0,
       this.numericCharCount = 0,
       this.specialCharCount = 0,
