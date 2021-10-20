@@ -89,8 +89,9 @@ class _FlutterPwValidatorState extends State<FlutterPwValidator> {
     int trueCondition = 0;
     bool isFalse = false;
     for (bool value in conditionsHelper.getter().values) {
-      if (value == true) trueCondition += 1;
-      if (value == false && conditionsCount != trueCondition) {
+      if (value == true)
+        trueCondition += 1;
+      else if (value == false && conditionsCount != trueCondition) {
         isFalse = true;
       }
     }
