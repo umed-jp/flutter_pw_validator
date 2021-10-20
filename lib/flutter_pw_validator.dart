@@ -14,6 +14,7 @@ class FlutterPwValidator extends StatefulWidget {
   final Color defaultColor, successColor, failureColor;
   final double width, height;
   final Function onSuccess;
+  final Function onFailure;
   final TextEditingController controller;
 
   FlutterPwValidator(
@@ -21,6 +22,7 @@ class FlutterPwValidator extends StatefulWidget {
       @required this.height,
       @required this.minLength,
       @required this.onSuccess,
+      @required this.onFailure,
       @required this.controller,
       this.uppercaseCharCount = 0,
       this.numericCharCount = 0,
@@ -85,10 +87,20 @@ class _FlutterPwValidatorState extends State<FlutterPwValidator> {
     //Checks if all condition are true then call the user callback
     int conditionsCount = conditionsHelper.getter().length;
     int trueCondition = 0;
+    bool isFalse = false;
     for (bool value in conditionsHelper.getter().values) {
-      if (value == true) trueCondition += 1;
+      if (value == true)
+        trueCondition += 1;
+      else if (value == false && conditionsCount != trueCondition) {
+        isFalse = true;
+      }
     }
-    if (conditionsCount == trueCondition) widget.onSuccess();
+
+    if (conditionsCount == trueCondition)
+      widget.onSuccess();
+    else if (isFalse) {
+      widget.onFailure();
+    }
 
     //Rebuild the UI
     setState(() => null);
@@ -148,8 +160,7 @@ class _FlutterPwValidatorState extends State<FlutterPwValidator> {
                 //Iterate through the condition map entries and generate new ValidationTextWidget for each item in Green or Red Color
                 children: conditionsHelper.getter().entries.map((entry) {
                   int value;
-                  if (entry.key == Strings.AT_LEAST)
-                    value = widget.minLength;
+                  if (entry.key == Strings.AT_LEAST) value = widget.minLength;
                   if (entry.key == Strings.UPPERCASE_LETTER)
                     value = widget.uppercaseCharCount;
                   if (entry.key == Strings.NUMERIC_CHARACTER)
@@ -160,8 +171,8 @@ class _FlutterPwValidatorState extends State<FlutterPwValidator> {
                     color: isFirstRun
                         ? widget.defaultColor
                         : entry.value
-                        ? widget.successColor
-                        : widget.failureColor,
+                            ? widget.successColor
+                            : widget.failureColor,
                     text: entry.key,
                     value: value,
                   );
@@ -171,7 +182,6 @@ class _FlutterPwValidatorState extends State<FlutterPwValidator> {
       ),
     );
   }
-
 
   //Dispose the TextField controller
   @override
